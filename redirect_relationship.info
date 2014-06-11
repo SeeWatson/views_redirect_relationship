@@ -1,0 +1,7 @@
+name = Redirect Relationships
+description = Provides an interface for writing documentation for your Drupal implementation
+package = Views
+core = 7.x
+dependencies[] = views
+dependencies[] = redirect
+

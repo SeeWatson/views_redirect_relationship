@@ -1,0 +1,32 @@
+<?php
+function redirect_relationship_enable() {
+  $schema['redirect'] = array();
+  
+  redirect_relationship_schema_alter($schema);
+  
+  foreach ($schema['redirect']['fields'] as $name => $spec) {
+    db_add_field('redirect', $name, $spec);
+  }
+}
+
+function redirect_relationship_disable() {
+  $schema['redirect'] = array();
+  
+  redirect_relationship_schema_alter($schema);
+  
+  foreach ($schema['redirect']['fields'] as $name => $spec) {
+    db_drop_field('redirect', $name, $spec);
+  }
+}
+
+function redirect_relationship_schema_alter(&$schema) {
+  if (isset($schema['redirect'])) {
+    $schema['redirect']['fields']['nid'] = array(
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0,
+      'description' => 'The {node}.nid of the node that the redirect points to.',
+    );
+  }
+}
