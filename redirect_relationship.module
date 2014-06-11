@@ -1,17 +1,33 @@
 <?php
+/**
+ * @file
+ * Drupal hooks to .
+ *
+ * This is the main module file for Views. The main entry points into
+ * this module are views_page() and views_block(), where it handles
+ * incoming page and block requests.
+ */
+
+/**
+ * Implements hook_view_api to tell views we're here
+ */
 function redirect_relationship_views_api() {
   return array(
     'api' => 3,
     'path' => drupal_get_path('module', 'redirect_relationship') . '/includes/views',
-    'template path' => drupal_get_path('module', 'redirect_relationship') . '/themes',
   );
 }
-
+/**
+ * Implements function hook_form_FORM_ID_alter to tell the redirect add/edit form to add a custom submit function
+ */
 function redirect_relationship_form_redirect_edit_form_alter(&$form, &$form_state, $form_id) {
-  $form['#submit'][1] = $form['#submit'][0];
-  $form['#submit'][0] = 'redirect_relationship_edit_form_submit';
+  array_unshift($form['#submit'],'redirect_relationship_edit_form_submit');
 }
-
+/**
+ * Custom submit function for the redirect add/edit form that runs before the main one. It
+ * determines if the redirect is to a node (node/###), and if so, it extracts the nid and sets
+ * it to be saved to the database when the primary submit handler is run.
+ */
 function redirect_relationship_edit_form_submit(&$form, &$form_state) {
   if(preg_match('~(?P<nodetext>node/)(?P<nid>\d+)~',$form_state['values']['redirect'],$matches)) {
     $form_state['values']['nid'] = $matches['nid'];

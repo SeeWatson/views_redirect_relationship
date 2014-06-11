@@ -1,4 +1,13 @@
 <?php
+/**
+ * @file
+ * Contains install and update functions for redirect_relationship.
+ * Creates/deletes redirect database field for nid & updates db schema.
+ */
+
+/**
+ * Implements hook_enable to create a database field
+ */
 function redirect_relationship_enable() {
   $schema['redirect'] = array();
   
@@ -8,7 +17,9 @@ function redirect_relationship_enable() {
     db_add_field('redirect', $name, $spec);
   }
 }
-
+/**
+ * Implements hook_disable to drop the database field
+ */
 function redirect_relationship_disable() {
   $schema['redirect'] = array();
   
@@ -18,7 +29,9 @@ function redirect_relationship_disable() {
     db_drop_field('redirect', $name, $spec);
   }
 }
-
+/**
+ * Implements hook_schema_alter tell Drupal about the database field
+ */
 function redirect_relationship_schema_alter(&$schema) {
   if (isset($schema['redirect'])) {
     $schema['redirect']['fields']['nid'] = array(
