@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Views integration and data modifications for the views_redirect_relationship module.
+ * Views relationship integration.
  */
 
 /**
@@ -36,7 +36,7 @@ function views_redirect_relationship_views_data_alter(&$data) {
       'label' => 'nodes',
     ),
   );
- 
+
   $data['node']['redirect_node_nid'] = array(
     'title' => t('Redirects'),
     'help' => t('Relate all redirects pointing to the individual node'),
