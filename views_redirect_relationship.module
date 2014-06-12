@@ -1,0 +1,98 @@
+<?php
+/**
+ * @file
+ * Implements hooks and generates nid connectors.
+ */
+
+/**
+ * Implements hook_view_api().
+ */
+function views_redirect_relationship_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'views_redirect_relationship') . '/views',
+  );
+}
+
+/**
+ * Implements function hook_form_FORM_ID_alter().
+ *
+ * Adds a custom submit function to the redirect add/edit form.
+ */
+function views_redirect_relationship_form_redirect_edit_form_alter(&$form, &$form_state, $form_id) {
+  array_unshift($form['#submit'], 'views_redirect_relationship_edit_form_submit');
+}
+
+/**
+ * Custom submit function for the redirect add/edit form.
+ *
+ * Runs before the main submit function. Determines if the redirect
+ * is to a node (node/###), and if so, it extracts the nid and sets
+ * it to be saved to the database when the primary submit handler is run.
+ */
+function views_redirect_relationship_edit_form_submit(&$form, &$form_state) {
+  $form_state['values']['nid'] = views_redirect_relationship_generate($form_state['values']['redirect']);
+}
+
+/**
+ * Implements hook_menu().
+ */
+function views_redirect_relationship_menu() {
+  $items['admin/config/search/redirect/views_redirect_relationship/generate'] = array(
+    'title' => 'Re-generate Relationship NIDs (try if relationships are not working)',
+    'page callback' => 'views_redirect_relationship_generate_all',
+    'page arguments' => array(
+      'admin/config/search/redirect',
+    ),
+    'access arguments' => array(
+      'administer redirects',
+    ),
+    'type' => MENU_LOCAL_ACTION,
+  );
+  return $items;
+}
+
+/**
+ * Callback function used to generate nid values.
+ *
+ * If {redirect}.redirect is a node reference,
+ * convert it to simple nid and save it in {redirect}.nid
+ *
+ * @see views_redirect_relationship_menu()
+ * @see views_redirect_relationship_enable()
+ */
+function views_redirect_relationship_generate_all($forward = FALSE) {
+  try {
+    $result = db_select('redirect', 'r')->fields('r')->condition('redirect', 'node/[0-9]+', 'REGEXP')->execute();
+
+    foreach ($result as $record) {
+      db_update('redirect')->fields(
+        array(
+          'nid' => views_redirect_relationship_generate($record->redirect),
+        )
+      )
+      ->condition('rid', $record->{'rid'})
+      ->execute();
+    }
+  }
+  catch (Exception $e) {
+    $errors = '';
+    $errors .= $e;
+  }
+
+  (isset($errors) ? drupal_set_message($errors, 'error') : drupal_set_message(t('The redirect to node relationships were created successfully.'), 'status'));
+
+  if ($forward) {
+    drupal_goto($forward);
+  }
+}
+
+/**
+ * Helper function that returns the node id from the destination (node/###).
+ */
+function views_redirect_relationship_generate($destination) {
+  if (preg_match('~(?P<nodetext>node/)(?P<nid>\d+)~', $destination, $matches)) {
+    return $matches['nid'];
+  }
+  return 0;
+}
