@@ -3,8 +3,8 @@
  * @file
  * Views integration and data modifications for the views_redirect_relationship module.
  */
- 
- /**
+
+/**
  * Implements hook_views_data_alter().
  *
  * Adds a two-way relationship between nodes/content and redirects
@@ -36,7 +36,7 @@ function views_redirect_relationship_views_data_alter(&$data) {
       'label' => 'nodes',
     ),
   );
-  
+ 
   $data['node']['redirect_node_nid'] = array(
     'title' => t('Redirects'),
     'help' => t('Relate all redirects pointing to the individual node'),
@@ -55,12 +55,12 @@ function views_redirect_relationship_views_data_alter(&$data) {
       'handler' => 'views_handler_argument_numeric',
     ),
     'relationship' => array(
-        'group' => t('Redirect'),
-        'handler' => 'views_handler_relationship',
-        'base' => 'redirect',
-        'base field' => 'nid',
-        'relationship field' => 'nid',
-        'label' => 'redirects',
+      'group' => t('Redirect'),
+      'handler' => 'views_handler_relationship',
+      'base' => 'redirect',
+      'base field' => 'nid',
+      'relationship field' => 'nid',
+      'label' => 'redirects',
     ),
   );
 }

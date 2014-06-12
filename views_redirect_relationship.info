@@ -4,4 +4,3 @@ package = Views
 core = 7.x
 dependencies[] = views
 dependencies[] = redirect
-

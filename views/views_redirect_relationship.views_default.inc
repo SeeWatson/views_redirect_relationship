@@ -128,7 +128,7 @@ function views_redirect_relationship_views_default_views() {
   $handler->display->display_options['path'] = 'content-with-redirect-relationship';
 
   $views[$view->name] = $view;
-  
+
   $view = new view();
   $view->name = 'redirect_with_content_relationship';
   $view->description = 'This view provides an example of a redirect => node relationship.';
@@ -252,7 +252,7 @@ function views_redirect_relationship_views_default_views() {
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'redirect-with-content-relationship';
-    
+
   $views[$view->name] = $view;
 
   return $views;
