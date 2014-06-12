@@ -1,5 +1,5 @@
 name = Redirect Relationships
-description = Provides an interface for writing documentation for your Drupal implementation
+description = Helps admins keep track of their redirects by establishing a views relationship between redirect entities and nodes
 package = Views
 core = 7.x
 dependencies[] = views

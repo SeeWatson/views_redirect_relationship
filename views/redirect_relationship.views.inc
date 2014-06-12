@@ -1,7 +1,7 @@
 <?php
 function redirect_relationship_views_data_alter(&$data) {
     $data['redirect']['nid'] = array(
-      'title' => t('Redirect Endpoint Nodes'),
+      'title' => t('Content NID'),
       'help' => t('Relate all nodes which form internal endpoints for redirects.'),
       'field' => array(
         'handler' => 'views_handler_field',
@@ -18,10 +18,12 @@ function redirect_relationship_views_data_alter(&$data) {
         'handler' => 'views_handler_argument_numeric',
       ),
       'relationship' => array(
+        'group' => t('Content'),
         'handler' => 'views_handler_relationship',
         'base' => 'node',
         'base field' => 'nid',
-        'label' => 'node',
+        'relationship field' => 'nid',
+        'label' => 'nodes',
       ),
     );
     
@@ -44,12 +46,11 @@ function redirect_relationship_views_data_alter(&$data) {
       ),
       'relationship' => array(
           'group' => t('Redirect'),
-          'label' => t('Redirects'),
           'handler' => 'views_handler_relationship',
           'base' => 'redirect',
           'base field' => 'nid',
           'relationship field' => 'nid',
-          'label' => 'redirect',
+          'label' => 'redirects',
       ),
     );
 }

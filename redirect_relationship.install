@@ -9,24 +9,22 @@
  * Implements hook_enable to create a database field
  */
 function redirect_relationship_enable() {
-  $schema['redirect'] = array();
+  $schema = drupal_get_schema('redirect');
   
-  redirect_relationship_schema_alter($schema);
-  
-  foreach ($schema['redirect']['fields'] as $name => $spec) {
-    db_add_field('redirect', $name, $spec);
+  if($schema) {
+    db_add_field('redirect', 'nid', $schema['fields']['nid']);
   }
+  
+  redirect_relationship_generate_all();
 }
 /**
  * Implements hook_disable to drop the database field
  */
 function redirect_relationship_disable() {
-  $schema['redirect'] = array();
+  $schema = drupal_get_schema('redirect');
   
-  redirect_relationship_schema_alter($schema);
-  
-  foreach ($schema['redirect']['fields'] as $name => $spec) {
-    db_drop_field('redirect', $name, $spec);
+  if($schema) {
+    db_drop_field('redirect', 'nid', $schema['fields']['nid']);
   }
 }
 /**
@@ -42,6 +40,4 @@ function redirect_relationship_schema_alter(&$schema) {
       'description' => 'The {node}.nid of the node that the redirect points to.',
     );
   }
-  
-  dsm($schema);
 }
