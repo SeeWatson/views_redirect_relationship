@@ -74,7 +74,7 @@ function views_redirect_relationship_generate_all($forward = FALSE) {
       ->condition('rid', $record->{'rid'})
       ->execute();
     }
-  } 
+  }
   catch (Exception $e) {
     $errors = '';
     $errors .= $e;

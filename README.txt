@@ -21,4 +21,3 @@ Views Redirect Relationship was built for Drupal 7.x, and only works with it at 
 Dependencies
 
 Given that the module uses views to display lists of redirects, it requires the Views and Redirect modules.
-
