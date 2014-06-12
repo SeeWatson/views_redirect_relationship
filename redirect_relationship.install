@@ -42,4 +42,6 @@ function redirect_relationship_schema_alter(&$schema) {
       'description' => 'The {node}.nid of the node that the redirect points to.',
     );
   }
+  
+  dsm($schema);
 }

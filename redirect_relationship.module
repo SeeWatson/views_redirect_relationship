@@ -14,7 +14,7 @@
 function redirect_relationship_views_api() {
   return array(
     'api' => 3,
-    'path' => drupal_get_path('module', 'redirect_relationship') . '/includes/views',
+    'path' => drupal_get_path('module', 'redirect_relationship') . '/views',
   );
 }
 /**
