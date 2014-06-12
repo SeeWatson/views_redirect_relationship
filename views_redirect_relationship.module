@@ -55,26 +55,32 @@ function views_redirect_relationship_menu() {
 /**
  * Callback function used to generate nid values.
  *
- * If {redirect}.redirect is a node reference, 
+ * If {redirect}.redirect is a node reference,
  * convert it to simple nid and save it in {redirect}.nid
  *
- * @see views_redirect_relationship_menu().
- * @see views_redirect_relationship_enable().
+ * @see views_redirect_relationship_menu()
+ * @see views_redirect_relationship_enable()
  */
 function views_redirect_relationship_generate_all($forward = FALSE) {
   try {
     $result = db_select('redirect', 'r')->fields('r')->condition('redirect', 'node/[0-9]+', 'REGEXP')->execute();
 
     foreach ($result as $record) {
-        db_update('redirect')->fields(array(
-          'nid' => views_redirect_relationship_generate($record->redirect)
-        ))->condition('rid', $record->{'rid'})->execute();
-      }
-  } catch (Exception $e) {
+      db_update('redirect')->fields(
+        array(
+          'nid' => views_redirect_relationship_generate($record->redirect),
+        )
+      )
+      ->condition('rid', $record->{'rid'})
+      ->execute();
+    }
+  } 
+  catch (Exception $e) {
+    $errors = '';
     $errors .= $e;
   }
 
-  (isset($errors) ? drupal_set_message(t($errors), 'error') : drupal_set_message(t('The redirect to node relationships were created successfully.'), 'status'));
+  (isset($errors) ? drupal_set_message($errors, 'error') : drupal_set_message(t('The redirect to node relationships were created successfully.'), 'status'));
 
   if ($forward) {
     drupal_goto($forward);
