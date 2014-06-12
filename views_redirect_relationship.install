@@ -1,0 +1,46 @@
+<?php
+/**
+ * @file
+ * Contains install and update functions for views_redirect_relationship.
+ * Creates/deletes redirect database field for nid & updates db schema.
+ */
+
+/**
+ * Implements hook_enable() to create a database field.
+ */
+function views_redirect_relationship_enable()
+{
+  $schema = drupal_get_schema('redirect');
+  
+  if ($schema) {
+    db_add_field('redirect', 'nid', $schema['fields']['nid']);
+  }
+  
+  views_redirect_relationship_generate_all();
+}
+/**
+ * Implements hook_disable() to drop the database field
+ */
+function views_redirect_relationship_disable()
+{
+  $schema = drupal_get_schema('redirect');
+  
+  if ($schema) {
+    db_drop_field('redirect', 'nid', $schema['fields']['nid']);
+  }
+}
+/**
+ * Implements hook_schema_alter() to tell Drupal about the database field
+ */
+function views_redirect_relationship_schema_alter(&$schema)
+{
+  if (isset($schema['redirect'])) {
+    $schema['redirect']['fields']['nid'] = array(
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0,
+      'description' => 'The {node}.nid of the node that the redirect points to.'
+    );
+  }
+}
