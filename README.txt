@@ -12,6 +12,8 @@ The module provides a relationship connector within the Views interface between 
 
 This relationship allows for Views to include fields from the redirect itself and its connected node, as can be seen in the included default views.
 
+To use the module, you need only add a relationship within the views interface. The documentation for how to do this can be found at siteroot/help/views/relationship.
+
 
 Versions
 
