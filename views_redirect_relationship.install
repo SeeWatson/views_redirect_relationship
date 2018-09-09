@@ -7,12 +7,12 @@
  */
 
 /**
- * Implements hook_enable().
+ * Implements hook_install().
  *
  * Create a database field `nid` in the redirects table and
  * updates the database schema.
  */
-function views_redirect_relationship_enable() {
+function views_redirect_relationship_install() {
   $schema = drupal_get_schema('redirect');
 
   if ($schema) {
@@ -23,16 +23,12 @@ function views_redirect_relationship_enable() {
 }
 
 /**
- * Implements hook_disable().
+ * Implements hook_uninstall().
  *
  * Drops the database field and updates the database schema.
  */
-function views_redirect_relationship_disable() {
-  $schema = drupal_get_schema('redirect');
-
-  if ($schema) {
-    db_drop_field('redirect', 'nid', $schema['fields']['nid']);
-  }
+function views_redirect_relationship_uninstall() {
+  db_drop_field('redirect', 'nid');
 }
 
 /**
@@ -47,5 +43,6 @@ function views_redirect_relationship_schema_alter(&$schema) {
       'default' => 0,
       'description' => 'The {node}.nid of the node that the redirect points to.',
     );
+    $schema['indexes']['nid'] = array('nid');
   }
 }
